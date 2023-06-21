@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Data</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+  <script>
+    function loadXML() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          displayData(this.responseXML);
+        }
+      };
+      xhttp.open("GET", "student.xml", true);
+      xhttp.send();
+    }
+
+    function displayData(xml) {
+      var table = document.createElement("table");
+      var students = xml.getElementsByTagName("student");
+
+      for (var i = 0; i < students.length; i++) {
+        var student = students[i];
+        var id = student.getElementsByTagName("id")[0].textContent;
+        var name = student.getElementsByTagName("name")[0].textContent;
+        var age = student.getElementsByTagName("age")[0].textContent;
+
+        var row = table.insertRow(i);
+        var idCell = row.insertCell(0);
+        var nameCell = row.insertCell(1);
+        var ageCell = row.insertCell(2);
+
+        idCell.innerHTML = id;
+        nameCell.innerHTML = name;
+        ageCell.innerHTML = age;
+      }
+
+      var output = document.getElementById("output");
+      output.appendChild(table);
+    }
+  </script>
+</head>
+<body>
+  <h1>Student Data</h1>
+  <button onclick="loadXML()">Load Data</button>
+  <div id="output"></div>
+</body>
+</html>
